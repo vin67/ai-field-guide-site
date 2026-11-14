@@ -7,6 +7,6 @@ Practical AI for architects in 22 short sessions, in three tracks: the foundatio
 
 Your progress and notes are saved only in the browser you use, never sent anywhere.
 
-This repository holds only the published guide. Version 5.2.0.
+This repository holds only the published guide. Version 5.2.1.
 
 Content © Vinod Ralh, licensed under [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/): you may share and adapt it with attribution, not commercially, and under the same licence. The software inside the page is [MIT licensed](https://opensource.org/license/mit).
