@@ -6,7 +6,7 @@
 <title>AI Field Guide for architects</title>
 <meta name="description" content="Practical AI for architects in 22 short sessions, in three tracks: the foundations (prompting, reusable skills, why AI gets it wrong, grounding with RAG), skills in depth, and architecture practice, from keeping your own judgement to MCP, agents and build, buy or generate. Works with any AI assistant.">
 <meta name="author" content="Vinod Ralh">
-<meta name="generator" content="fg build 5.2.7">
+<meta name="generator" content="fg build 5.2.8">
 <meta name="theme-color" content="#f6f8fa" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0d1a2c" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
@@ -8418,19 +8418,20 @@ Answer only: use it, or don't use it, with one reason.</fg-prompt>
 <header class="app-tb">
   <div class="app-tb__main">
     <h1 id="build-your-eval-kit-title" tabindex="-1">Build your eval kit</h1>
-    <p class="app-tb__summary">Use a skill that writes test plans, see which planted flaws it finds, then give your verdict and adapt the kit to your own work.</p>
+    <p class="app-tb__summary">Give your verdict, then use a skill that writes test plans, see how it is built and what it finds, and adapt it to your own work with a real failure.</p>
   </div>
   <p class="app-tb__num"><small>Step</small><strong>5.5</strong></p>
   <dl class="app-tb__fields">
     <div><dt>Part 5</dt><dd>Evaluate a skill</dd></div>
     <div><dt>Time</dt><dd>15 min</dd></div>
-    <div><dt>Last reviewed</dt><dd>7 November 2026</dd></div>
+    <div><dt>Last reviewed</dt><dd>20 November 2026</dd></div>
   </dl>
 </header>
 <div class="app-body">
 <aside class="fg-facilitator"><p>Take the second show of hands before you open the answer key, and put it next to the first count. Ask who changed their mind, and which result changed it. Name the trap out loud: a kit written by a model tests what a model thinks matters, so people’s own failures have to go in.</p></aside>
 
-<p>You’ve done it by hand. It took a lot of chats, and you had to invent the requests, tasks and checks. Most of that planning can be packaged as a skill. The running and deciding shouldn’t be.</p>
+<p>An <strong>eval</strong>, short for evaluation, is a test you can repeat: the same requests and checks, run the same way each time, so you can tell whether an AI tool does its job and whether a change made it better or worse. Over the last three steps you built one by hand. It took a lot of chats, and you had to invent the requests, tasks and checks yourself.</p>
+<p>Most of that planning can be packaged as a skill, so next time you don’t start from a blank page. This step gives you that skill, the <strong>eval kit</strong>. You’ll see it work on the skill you’ve been testing, follow a worked example, then make your own copy for your own work. The kit only writes the plan. Running the tests and deciding stay with you.</p>
 
 <figure class="fg-figure">
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 396" role="img" aria-labelledby="fig-eval-kit-anatomy-title fig-eval-kit-anatomy-desc"><defs><marker id="fig-eval-kit-anatomy-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrow" d="M0,1 L10,5 L0,9 z"/></marker><marker id="fig-eval-kit-anatomy-arrow-right" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrow-right" d="M0,1 L10,5 L0,9 z"/></marker><marker id="fig-eval-kit-anatomy-arrow-wrong" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrow-wrong" d="M0,1 L10,5 L0,9 z"/></marker><marker id="fig-eval-kit-anatomy-arrow-model" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrow-model" d="M0,1 L10,5 L0,9 z"/></marker><marker id="fig-eval-kit-anatomy-arrow-context" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrow-context" d="M0,1 L10,5 L0,9 z"/></marker></defs>
@@ -8464,29 +8465,69 @@ Answer only: use it, or don't use it, with one reason.</fg-prompt>
 <figcaption><strong>The kit’s limit is part of its design.</strong> It writes the plan and leaves every result blank. A model that scored its own plan would have nobody checking it.</figcaption>
 </figure>
 
-<section class="fg-phase">
-<h3><span class="fg-phase__n">1</span> Run the kit on the skill you’ve been testing</h3>
-<fg-prompt source="eval-kit-skill" label="skill-eval-kit / SKILL.md" copy-label="Copy skill" filename="SKILL.md"></fg-prompt>
-<p>Install it the way you installed the last one, naming the folder <code>skill-eval-kit</code>. No skills feature? Paste the whole kit at the top of a new chat. Before you run it, <strong>predict: which faults will it find, and which will it miss?</strong></p>
-<fg-field key="kit-bet" label="What I think the kit will find and miss" export-label="Kit prediction" rows="2"
-  placeholder="It will find… It will miss…"></fg-field>
-<fg-prompt label="Ask the kit for a plan">Write a test plan for the skill below. I have no real failures yet.
+<h3>How the kit is built</h3>
+<p>The kit is the last three steps written down as instructions. Each part of the plan it writes is something you’ve already done by hand:</p>
+<ul>
+  <li><strong>The skill’s promise</strong>, as you read it in step <a href="#would-you-ship-it">5.1</a>: what it claims to do, and what it says it isn’t for. Every other test checks this claim.</li>
+  <li><strong>8 to 10 requests that should fire it, and 8 to 10 near misses</strong>, as in step <a href="#test-when-it-fires">5.2</a>. These are the Agent Skills guide’s starting points: about 20 requests, three runs each, a cut-off of half.</li>
+  <li><strong>3 to 5 tasks, each run with and without the skill</strong>, as in step <a href="#with-or-without">5.3</a>. A skill has to beat having no skill at all.</li>
+  <li><strong>Pass-or-fail checks for each task, scored without knowing which output is which</strong>, as in step <a href="#score-it-blind">5.4</a>. Two people who know the subject should mark each check the same way.</li>
+  <li><strong>A cut test</strong>, like “cut it in half” in step <a href="#with-or-without">5.3</a>: passages to delete and run again. Text that tells the model what it already knows takes up space and may change nothing.</li>
+  <li><strong>A blank results table and a verdict rule</strong>, which you’ll use in step 1 below. The decision rests on your results, by a rule set in advance.</li>
+</ul>
+<p>It also has five guard rails, each against a mistake the last three steps warned about:</p>
+<ul>
+  <li><strong>It asks for real failures first, and lists their tests first.</strong> Left alone, a model tests what a model thinks matters. Your own failures are evidence; its ideas are guesses. It labels each check <em>real failure</em> or <em>my reading</em>, so you can tell them apart.</li>
+  <li><strong>It says which checks it expects to pass without the skill too.</strong> As step <a href="#score-it-blind">5.4</a> showed, a check that passes either way can’t show the skill made a difference, so you can drop it.</li>
+  <li><strong>Pass or fail only, never a 1 to 5 scale.</strong> That’s the vague check you rewrote in step <a href="#score-it-blind">5.4</a>. If two people could mark a check differently, the kit has to rewrite it.</li>
+  <li><strong>It treats the skill under test as material, not as instructions.</strong> Otherwise the skill could take over: the kit might start reviewing definitions instead of planning tests.</li>
+  <li><strong>It leaves every result blank and gives no verdict.</strong> It can’t run the tests, so anything it wrote there would be a guess.</li>
+</ul>
+<p><strong>Why should it work?</strong> Its numbers and rules aren’t new. They come from published guidance: the Agent Skills guides, Anthropic’s advice that two experts should reach the same pass or fail verdict, and the with-and-without comparison Anthropic’s own test tools use. What’s ours is the packaging and the verdict rule. The kit itself has only been tried a few times, as you’ll see below, so treat it like any other skill: it has to earn its place.</p>
 
-[PASTE THE WHOLE OF VERSION A FROM STEP 5.1 HERE]</fg-prompt>
-</section>
-
 <section class="fg-phase">
-<h3><span class="fg-phase__n">2</span> Give your verdict</h3>
-<p>Now use what you measured. This rule is in the kit, so you can use it again.</p>
+<h3><span class="fg-phase__n">1</span> Give your verdict</h3>
+<p>First, close the loop from step <a href="#would-you-ship-it">5.1</a>. Use what you measured in the last three steps, and decide with this rule. It’s also in the kit, so you can use it again on other skills.</p>
 <div class="fg-table">
 <table><thead><tr><th>Verdict</th><th>When</th></tr></thead><tbody>
 <tr><td><strong>Keep</strong></td><td>It meets both trigger minimums, passes more checks than no skill on at least one task, and is worse on none.</td></tr>
 <tr><td><strong>Fix</strong></td><td>It fails in a way you can trace to a line. Wrong firing means the description. Right firing with a wrong result means the instructions. Fix it and run the tests again.</td></tr>
 <tr><td><strong>Retire</strong></td><td>After one round of fixes, it still doesn’t beat no skill on any check that can differ.</td></tr>
 </tbody></table></div>
-<p class="fg-fineprint">This rule is our suggestion, not a standard. Change it if your context calls for a different one, but change it before you run the tests.</p>
+<p>In plain words:</p>
+<ul>
+  <li><strong>Both trigger minimums</strong> are the two numbers you wrote down in step <a href="#test-when-it-fires">5.2</a>: how often it must fire when it should, and how often it must stay out when it shouldn’t.</li>
+  <li><strong>A check that can differ</strong> is one the skill could change. Leave out checks that passed both with and without the skill.</li>
+  <li><strong>One round of fixes</strong> stops a weak skill being patched for ever. <strong>Our reading:</strong> if one honest fix doesn’t make it beat no skill, the problem is usually the idea, not the wording.</li>
+</ul>
+<p class="fg-fineprint">This rule is our suggestion, not a standard. If your context calls for a different one, change it before your next round of tests, not after you’ve seen the results.</p>
 <fg-field key="final-verdict" label="My verdict now, and the result that decided it" export-label="Final verdict" rows="3"
   placeholder="Keep / fix / retire, because… Compared with my first verdict in step 5.1, I…"></fg-field>
+</section>
+
+<section class="fg-phase">
+<h3><span class="fg-phase__n">2</span> Run the kit on the skill you’ve been testing</h3>
+<fg-prompt source="eval-kit-skill" label="skill-eval-kit / SKILL.md" copy-label="Copy skill" filename="SKILL.md"></fg-prompt>
+<p>Install it the way you installed the last one, naming the folder <code>skill-eval-kit</code>. No skills feature? Paste the whole kit at the top of a new chat. Before you run it, <strong>predict: which faults will it find, and which will it miss?</strong></p>
+<fg-field key="kit-bet" label="What I think the kit will find and miss" export-label="Kit prediction" rows="2"
+  placeholder="It will find… It will miss…"></fg-field>
+<p>Then send this, with the skill from step <a href="#would-you-ship-it">5.1</a> pasted in. It’s the same file as version A in step <a href="#test-when-it-fires">5.2</a>.</p>
+<fg-prompt label="Ask the kit for a plan">Write a test plan for the skill below. I have no real failures yet.
+
+[PASTE THE WHOLE OF THE SKILL FROM STEP 5.1 HERE]</fg-prompt>
+<details class="fg-reveal"><summary>Worked example: the plan the kit wrote for us</summary>
+<p>Open this once you’ve run the kit yourself, or if you can’t. We sent the prompt above once, to Claude Sonnet 5.5 with the kit loaded, and this is its reply, unedited. Yours will differ in the details. Compare the shape, not the words.</p>
+<fg-prompt source="eval-kit-example-plan" label="The kit’s plan, with no real failures" copy-label="Copy plan" filename="test-plan.md"></fg-prompt>
+<p>What to notice:</p>
+<ul>
+  <li><strong>It says what the plan rests on.</strong> With no real failures, every check is its own reading, and it labels each one <em>my reading</em>.</li>
+  <li><strong>The near misses are close calls.</strong> SQL for tables, a Postgres schema and normalising a table all share the skill’s subject but need something else. It marks two requests as borderline (T4 and T12) and asks you to note what happens.</li>
+  <li><strong>Task C is the trap.</strong> “Asset: anything of value”, with nothing else supplied. The skill demands a rewrite ready to paste, which tempts it to make facts up. Checks C1 and C2 catch that.</li>
+  <li><strong>It points out its own weak checks.</strong> It marks five as “no-skill likely”: an assistant with no skill would probably pass them too, so they can’t show a difference.</li>
+  <li><strong>Every result is blank, and there’s no verdict.</strong> Running the plan is your job.</li>
+</ul>
+<p class="fg-fineprint">One run on 20 November 2026, through an agent tool with the kit as its instructions rather than in a chat product. All the data in it is invented by the model.</p>
+</details>
 </section>
 
 <section class="fg-phase">
@@ -8502,6 +8543,7 @@ Answer only: use it, or don't use it, with one reason.</fg-prompt>
 </tbody></table></div>
 <p>Score the kit’s plan against them:</p>
 <fg-tally source="eval-plant-catch" key="kit-catch"></fg-tally>
+<p>The last two rows are things a good plan should not do. If it gave the verdict itself, it would be marking tests nobody has run. A 1 to 5 rating is the kind of check two people mark differently, so it can’t settle anything.</p>
 <p><strong>What we saw in a rough dry run.</strong> One run per cell, on one Claude Sonnet model through an agent tool rather than a chat product, scored by the writer and not blind. Treat it as a check on these materials, not a result. Yours count for more.</p>
 <div class="fg-table">
 <table><thead><tr><th>Checks passed</th><th>Flawed skill</th><th>No skill</th><th>Sound original</th></tr></thead><tbody>
@@ -8509,7 +8551,7 @@ Answer only: use it, or don't use it, with one reason.</fg-prompt>
 <tr><td>Task 2</td><td>1 of 3</td><td>1 of 3</td><td>2 of 3</td></tr>
 </tbody></table></div>
 <p>Two things stood out. <strong>Flaw 3 didn’t show:</strong> all three flagged the stored record, even with the gotcha gone. On that run, the gotcha added nothing the model didn’t already know, and an older or smaller model might behave differently. That’s why you test rather than assume. <strong>Flaw 2 did show:</strong> the flawed skill and no skill both wrote in durations, purposes and rules nobody had supplied, while the sound original asked questions. On Task 2, the flawed skill was no better than having no skill at all.</p>
-<p>In our one dry run of the kit, the plan found flaws 1, 2 and 4, and had no check aimed at flaw 3. It can’t see what was taken out. Its “What is missing” section helps, but only your own failures can tell it what went wrong before.</p>
+<p><strong>How the kit did.</strong> In our first dry run, its plan found flaws 1, 2 and 4, and had no check aimed at flaw 3. In the worked example in step 2 it came closer: check A1 notices that “Customers” describes a table, but folds that into the plural-name check and expects it to pass without the skill anyway. The kit can’t see what was taken out. Its “What is missing” section helps, but only your own failures can tell it what went wrong before. Step 4 shows what one does.</p>
 <details class="fg-reveal"><summary>Try the fix: run the sound original on Task 2</summary>
 <p>This is what “fix it and run the tests again” looks like. Install or paste this version, run Task 2 in a new chat, and mark it with the same checks.</p>
 <fg-prompt source="entity-definition-review" label="entity-definition-review / SKILL.md, the sound original" copy-label="Copy skill" filename="SKILL.md"></fg-prompt>
@@ -8521,7 +8563,48 @@ Answer only: use it, or don't use it, with one reason.</fg-prompt>
 
 <section class="fg-phase">
 <h3><span class="fg-phase__n">4</span> Adapt it to your own work</h3>
-<p>Pick a skill you use or plan to share, or a prompt you keep reusing. Run the kit on it, and give it one real failure.</p>
+<p>A plan built only on the kit’s reading tests what a model thinks matters. The tests worth most come from your own failures: requests the skill missed, times it fired when it shouldn’t, and outputs someone had to correct. Here’s what one real failure does to the plan.</p>
+
+<h4>Worked example: one real failure</h4>
+<p>Imagine your data steward once had to correct the skill. You’d describe it to the kit like this, with the details changed:</p>
+<fg-prompt label="Ask the kit for a plan, with a real failure">Write a test plan for the skill below. Here is one real failure, with the details changed:
+
+Someone asked it to review "Graduation: The status in the student system that is set when a student completes their award." It said Minor fixes, and its rewrite still talked about a status in the student system. Our data steward had to point out that the definition describes a system record, not the business event, and should have been flagged.
+
+[PASTE THE WHOLE OF THE SKILL FROM STEP 5.1 HERE]</fg-prompt>
+<details class="fg-reveal"><summary>The plan the kit wrote with that failure</summary>
+<p>Same model, same day, one run, unedited.</p>
+<fg-prompt source="eval-kit-example-failure" label="The kit’s plan, with one real failure" copy-label="Copy plan" filename="test-plan.md"></fg-prompt>
+<p>Compare it with the plan in step 2:</p>
+<ul>
+  <li><strong>The failure became two tasks.</strong> Task 1 is the failure itself. Task 2 is the same mistake on another subject, a flag in a policy system, to check that a fix works beyond the one example.</li>
+  <li><strong>Those checks are labelled <em>real failure</em></strong>, and they’re specific: the rewrite must not contain status, system, record, field, flag, table or database.</li>
+  <li><strong>“What is missing” now names the gap</strong>, and says how the failure got through: none of the skill’s six checks covers a business event against a system record.</li>
+</ul>
+<p>That gap is flaw 3, the planted fault the kit couldn’t find on its own. One real failure found what reading the skill couldn’t.</p>
+</details>
+
+<h4>Your turn</h4>
+<p>Pick a skill you use or plan to share, or a prompt you keep reusing. Write down one real failure, with the details changed, then send the kit this:</p>
+<fg-prompt label="Ask the kit for a plan for your skill">Write a test plan for the skill below. Here are its real failures, with the details changed:
+
+[FOR EACH: WHAT WAS ASKED, WHAT IT DID, AND WHAT SOMEONE HAD TO CORRECT]
+
+[PASTE THE WHOLE SKILL.MD HERE]</fg-prompt>
+<fg-field key="real-failure" label="A real failure of mine to add to the kit" export-label="A real failure to test" rows="2"
+  placeholder="Describe it with invented details: a request it missed, a time it fired wrongly, or an output someone corrected…"></fg-field>
+
+<h4>Then run the plan</h4>
+<p>A plan is only a plan until someone runs it. Run it the way you ran the last three steps: fresh chats, the same model, three runs per trigger request, each task with and without the skill, and scored blind if you can. It’s a lot of chats: 20 trigger requests at three runs each is 60, before the tasks. Split it across a group. If you’re short of time, run the tasks first. They show whether the skill helps at all, and how well it fires only matters if it does.</p>
+
+<h4>Make the kit your own</h4>
+<p>Download the kit and edit your copy. Three changes are worth making:</p>
+<ul>
+  <li><strong>Add your team’s common mistakes.</strong> If reviewers keep correcting the same thing, add a line to the kit’s Gotchas, such as “Always include a task that checks for [the mistake]”. Then every plan tests for it.</li>
+  <li><strong>Set the verdict rule for the risk.</strong> A skill that sends or changes things needs a stricter rule than a read-only reviewer. See “How reliably does each skill need to fire?” in step <a href="#test-when-it-fires">5.2</a>.</li>
+  <li><strong>Change the numbers if you need to.</strong> Fewer trigger requests for a quick check, more tasks for a skill used in high-stakes work.</li>
+</ul>
+<p>Then treat your copy like any other skill: test it before you share it.</p>
 <fg-assistant>
 <div data-for="chatgpt">
 <p>OpenAI’s developer docs give a five-part test list. The kit covers all five, and adds what the list doesn’t have: a baseline, repeat runs and grading.</p>
@@ -8544,8 +8627,6 @@ evaluate my entity-definition-review skill with skill-creator</fg-prompt>
 <p class="fg-fineprint">Checked 7 November 2026.</p>
 </div>
 </fg-assistant>
-<fg-field key="real-failure" label="A real failure of mine to add to the kit" export-label="A real failure to test" rows="2"
-  placeholder="Describe it with invented details: a request it missed, a time it fired wrongly, or an output someone corrected…"></fg-field>
 </section>
 
 <aside class="fg-callout" data-kind="note">
@@ -28445,7 +28526,7 @@ F4. Student Services: "How do the payment plan options compare if I start mid-ye
 </section>
     <footer class="app-footer">
       <p>This guide runs entirely in your browser. Your progress and notes are stored on this device only; nothing is sent from this page. Your AI assistant is a separate service with its own data, memory and retention settings.</p>
-      <p>AI Field Guide for architects, version 5.2.7. © 2026 Vinod Ralh. Content licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer license">CC BY-NC-SA 4.0</a>; software under the <a href="https://opensource.org/license/mit" target="_blank" rel="noopener noreferrer">MIT licence</a>.</p>
+      <p>AI Field Guide for architects, version 5.2.8. © 2026 Vinod Ralh. Content licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreferrer license">CC BY-NC-SA 4.0</a>; software under the <a href="https://opensource.org/license/mit" target="_blank" rel="noopener noreferrer">MIT licence</a>.</p>
     </footer>
   </main>
 </div>
@@ -28483,7 +28564,7 @@ F4. Student Services: "How do the payment plan options compare if I start mid-ye
   </form>
 </dialog>
 
-<script type="application/json" id="fg-data-course">{"id":"public","title":"AI Field Guide","subtitle":"for architects","version":"5.2.7","steps":[{"id":"what-is-an-ai-assistant","label":"1.1","title":"What is an AI assistant?","part":1},{"id":"ask-your-first-question","label":"1.2","title":"Ask your first question","part":1},{"id":"four-parts-of-a-good-prompt","label":"1.3","title":"Four parts of a good prompt","part":1},{"id":"improve-by-following-up","label":"1.4","title":"Improve by following up","part":1},{"id":"review-an-entity","label":"1.5","title":"Your turn: review an entity","part":1},{"id":"keep-what-worked","label":"1.6","title":"Keep what worked","part":1},{"id":"what-is-a-skill","label":"2.1","title":"What is a skill?","part":2},{"id":"read-a-real-skill","label":"2.2","title":"Read a real skill","part":2},{"id":"make-your-first-skill","label":"2.3","title":"Make your first skill","part":2},{"id":"test-the-skill","label":"2.4","title":"Test the skill","part":2},{"id":"improve-your-skill","label":"2.5","title":"Improve your skill","part":2},{"id":"wrap-up","label":"2.6","title":"Wrap up & next steps","part":2},{"id":"why-ai-gets-it-wrong","label":"3.1","title":"Why AI gets it wrong","part":3},{"id":"tokens-not-words","label":"3.2","title":"Tokens, not words","part":3},{"id":"memory-is-finite","label":"3.3","title":"Memory is finite","part":3},{"id":"long-chats-degrade","label":"3.4","title":"Long chats degrade early","part":3},{"id":"it-predicts","label":"3.5","title":"It predicts, it doesn’t look up","part":3},{"id":"helpful-so-agreeable","label":"3.6","title":"Helpful, so agreeable","part":3},{"id":"try-it","label":"3.7","title":"Try it","part":3},{"id":"spot-the-drift","label":"3.8","title":"Spot the drift","part":3},{"id":"recover-it","label":"3.9","title":"Recover it","part":3},{"id":"wrong-answer-acceptable","label":"3.10","title":"Where is a wrong answer acceptable?","part":3},{"id":"debrief","label":"3.11","title":"Debrief and what to do","part":3},{"id":"rag-open-book","label":"4.1","title":"Closed book, open book","part":4},{"id":"rag-by-hand","label":"4.2","title":"RAG by hand","part":4},{"id":"finding-the-right-passage","label":"4.3","title":"Finding the right passage","part":4},{"id":"augment-and-generate","label":"4.4","title":"Add the passages, then generate","part":4},{"id":"when-rag-goes-wrong","label":"4.5","title":"When RAG goes wrong","part":4},{"id":"choosing-an-approach","label":"4.6","title":"RAG or something else?","part":4},{"id":"grounding-wrap-up","label":"4.7","title":"Wrap up and discuss","part":4},{"id":"would-you-ship-it","label":"5.1","title":"Would you ship it?","part":5},{"id":"test-when-it-fires","label":"5.2","title":"Test when it fires","part":5},{"id":"with-or-without","label":"5.3","title":"With or without","part":5},{"id":"score-it-blind","label":"5.4","title":"Score it blind","part":5},{"id":"build-your-eval-kit","label":"5.5","title":"Build your eval kit","part":5},{"id":"failures-first","label":"6.1","title":"Start from a bad draft","part":6},{"id":"anchor-on-a-template","label":"6.2","title":"Anchor it on a template","part":6},{"id":"harvest-the-gotchas","label":"6.3","title":"Harvest the gotchas","part":6},{"id":"build-the-adr-author","label":"6.4","title":"Build the ADR author","part":6},{"id":"is-the-author-worth-it","label":"6.5","title":"Is the author worth it?","part":6},{"id":"sort-the-checks","label":"7.1","title":"Sort the checks","part":7},{"id":"why-self-review-fails","label":"7.2","title":"Why self-review fails","part":7},{"id":"build-the-verifier","label":"7.3","title":"Build the verifier","part":7},{"id":"find-the-plant","label":"7.4","title":"Find the plant","part":7},{"id":"where-should-it-stop","label":"8.1","title":"Where should it stop?","part":8},{"id":"build-the-triage","label":"8.2","title":"Build the triage","part":8},{"id":"push-it","label":"8.3","title":"Push it","part":8},{"id":"skills-that-compete","label":"8.4","title":"Skills that compete","part":8},{"id":"pin-a-source","label":"9.1","title":"Pin a source","part":9},{"id":"build-the-advisor","label":"9.2","title":"Build the advisor","part":9},{"id":"test-the-edges","label":"9.3","title":"Test the edges","part":9},{"id":"when-the-source-changes","label":"9.4","title":"When the source changes","part":9},{"id":"script-or-judgement","label":"10.1","title":"Script or judgement?","part":10},{"id":"read-before-you-run","label":"10.2","title":"Read before you run","part":10},{"id":"run-the-lint","label":"10.3","title":"Run the lint","part":10},{"id":"script-versus-model","label":"10.4","title":"Script versus model","part":10},{"id":"skills-meet-mcp","label":"11.1","title":"Skills meet MCP","part":11},{"id":"check-the-citations","label":"11.2","title":"Check the citations","part":11},{"id":"the-poisoned-page","label":"11.3","title":"The poisoned page","part":11},{"id":"design-the-access","label":"11.4","title":"Design the access","part":11},{"id":"tier-the-work","label":"12.1","title":"Tier the work","part":12},{"id":"run-the-chain","label":"12.2","title":"Run the chain","part":12},{"id":"stamp-the-provenance","label":"12.3","title":"Stamp the provenance","part":12},{"id":"is-the-chain-worth-it","label":"12.4","title":"Is the chain worth it?","part":12},{"id":"define-good","label":"13.1","title":"Define good","part":13},{"id":"run-a-bake-off","label":"13.2","title":"Run a bake-off","part":13},{"id":"same-skill-two-assistants","label":"13.3","title":"Same skill, two assistants","part":13},{"id":"own-it","label":"13.4","title":"Own it","part":13},{"id":"spread-and-retire","label":"13.5","title":"Spread and retire","part":13},{"id":"think-first-or-ask-first","label":"14.1","title":"Think first, or ask first?","part":14},{"id":"what-to-hand-over","label":"14.2","title":"What to hand over","part":14},{"id":"when-judgement-was-handed-over","label":"14.3","title":"When judgement was handed over","part":14},{"id":"how-we-talk-about-it","label":"14.4","title":"How we talk about it","part":14},{"id":"test-the-colleague","label":"14.5","title":"Test the colleague","part":14},{"id":"can-you-tell","label":"15.1","title":"Can you tell?","part":15},{"id":"review-the-claims","label":"15.2","title":"Review the claims","part":15},{"id":"send-it-back","label":"15.3","title":"Send it back","part":15},{"id":"set-the-submission-rule","label":"15.4","title":"Set the submission rule","part":15},{"id":"use-case-clinic","label":"15.5","title":"Use-case clinic","part":15},{"id":"one-question-many-answers","label":"16.1","title":"One question, many answers","part":16},{"id":"find-the-ambiguity","label":"16.2","title":"Find the ambiguity","part":16},{"id":"fix-it-with-a-definition","label":"16.3","title":"Fix it with a definition","part":16},{"id":"check-the-query","label":"16.4","title":"Check the query","part":16},{"id":"where-definitions-live","label":"16.5","title":"Where definitions live","part":16},{"id":"find-the-assistants","label":"17.1","title":"Find the assistants","part":17},{"id":"assess-one-assistant","label":"17.2","title":"Assess one assistant","part":17},{"id":"which-assistant-answers","label":"17.3","title":"Which assistant answers?","part":17},{"id":"switch-on-buy-or-build","label":"17.4","title":"Switch on, buy or build","part":17},{"id":"describe-to-diagram","label":"18.1","title":"From description to diagram","part":18},{"id":"check-the-abstraction","label":"18.2","title":"Check the abstraction","part":18},{"id":"critique-a-capability-map","label":"18.3","title":"Critique a capability map","part":18},{"id":"keep-models-as-text","label":"18.4","title":"Keep models as text","part":18},{"id":"what-mcp-changes","label":"19.1","title":"What MCP changes","part":19},{"id":"read-the-tool-list","label":"19.2","title":"Read the tool list","part":19},{"id":"map-the-session","label":"19.3","title":"Map the session","part":19},{"id":"whose-token-is-it","label":"19.4","title":"Whose token is it?","part":19},{"id":"decide-on-a-gateway","label":"19.5","title":"Decide on a gateway","part":19},{"id":"what-changes-when-it-acts","label":"20.1","title":"What changes when it acts","part":20},{"id":"read-an-agent-run","label":"20.2","title":"Read an agent run","part":20},{"id":"what-the-benchmarks-miss","label":"20.3","title":"What the benchmarks miss","part":20},{"id":"contain-the-agent","label":"20.4","title":"Contain the agent","part":20},{"id":"register-the-agent","label":"20.5","title":"Register the agent","part":20},{"id":"place-the-controls","label":"21.1","title":"Place the controls","part":21},{"id":"choose-a-model","label":"21.2","title":"Choose a model","part":21},{"id":"cost-a-use-case","label":"21.3","title":"Cost a use case","part":21},{"id":"plan-for-retirement","label":"21.4","title":"Plan for retirement","part":21},{"id":"why-reuse-came-first","label":"22.1","title":"Why reuse came first","part":22},{"id":"what-the-studies-show","label":"22.2","title":"What the studies show","part":22},{"id":"rerun-the-decision","label":"22.3","title":"Rerun the decision","part":22},{"id":"when-generated-code-fails","label":"22.4","title":"When generated code fails","part":22},{"id":"who-runs-what-you-generate","label":"22.5","title":"Who runs what you generate?","part":22}]}</script>
+<script type="application/json" id="fg-data-course">{"id":"public","title":"AI Field Guide","subtitle":"for architects","version":"5.2.8","steps":[{"id":"what-is-an-ai-assistant","label":"1.1","title":"What is an AI assistant?","part":1},{"id":"ask-your-first-question","label":"1.2","title":"Ask your first question","part":1},{"id":"four-parts-of-a-good-prompt","label":"1.3","title":"Four parts of a good prompt","part":1},{"id":"improve-by-following-up","label":"1.4","title":"Improve by following up","part":1},{"id":"review-an-entity","label":"1.5","title":"Your turn: review an entity","part":1},{"id":"keep-what-worked","label":"1.6","title":"Keep what worked","part":1},{"id":"what-is-a-skill","label":"2.1","title":"What is a skill?","part":2},{"id":"read-a-real-skill","label":"2.2","title":"Read a real skill","part":2},{"id":"make-your-first-skill","label":"2.3","title":"Make your first skill","part":2},{"id":"test-the-skill","label":"2.4","title":"Test the skill","part":2},{"id":"improve-your-skill","label":"2.5","title":"Improve your skill","part":2},{"id":"wrap-up","label":"2.6","title":"Wrap up & next steps","part":2},{"id":"why-ai-gets-it-wrong","label":"3.1","title":"Why AI gets it wrong","part":3},{"id":"tokens-not-words","label":"3.2","title":"Tokens, not words","part":3},{"id":"memory-is-finite","label":"3.3","title":"Memory is finite","part":3},{"id":"long-chats-degrade","label":"3.4","title":"Long chats degrade early","part":3},{"id":"it-predicts","label":"3.5","title":"It predicts, it doesn’t look up","part":3},{"id":"helpful-so-agreeable","label":"3.6","title":"Helpful, so agreeable","part":3},{"id":"try-it","label":"3.7","title":"Try it","part":3},{"id":"spot-the-drift","label":"3.8","title":"Spot the drift","part":3},{"id":"recover-it","label":"3.9","title":"Recover it","part":3},{"id":"wrong-answer-acceptable","label":"3.10","title":"Where is a wrong answer acceptable?","part":3},{"id":"debrief","label":"3.11","title":"Debrief and what to do","part":3},{"id":"rag-open-book","label":"4.1","title":"Closed book, open book","part":4},{"id":"rag-by-hand","label":"4.2","title":"RAG by hand","part":4},{"id":"finding-the-right-passage","label":"4.3","title":"Finding the right passage","part":4},{"id":"augment-and-generate","label":"4.4","title":"Add the passages, then generate","part":4},{"id":"when-rag-goes-wrong","label":"4.5","title":"When RAG goes wrong","part":4},{"id":"choosing-an-approach","label":"4.6","title":"RAG or something else?","part":4},{"id":"grounding-wrap-up","label":"4.7","title":"Wrap up and discuss","part":4},{"id":"would-you-ship-it","label":"5.1","title":"Would you ship it?","part":5},{"id":"test-when-it-fires","label":"5.2","title":"Test when it fires","part":5},{"id":"with-or-without","label":"5.3","title":"With or without","part":5},{"id":"score-it-blind","label":"5.4","title":"Score it blind","part":5},{"id":"build-your-eval-kit","label":"5.5","title":"Build your eval kit","part":5},{"id":"failures-first","label":"6.1","title":"Start from a bad draft","part":6},{"id":"anchor-on-a-template","label":"6.2","title":"Anchor it on a template","part":6},{"id":"harvest-the-gotchas","label":"6.3","title":"Harvest the gotchas","part":6},{"id":"build-the-adr-author","label":"6.4","title":"Build the ADR author","part":6},{"id":"is-the-author-worth-it","label":"6.5","title":"Is the author worth it?","part":6},{"id":"sort-the-checks","label":"7.1","title":"Sort the checks","part":7},{"id":"why-self-review-fails","label":"7.2","title":"Why self-review fails","part":7},{"id":"build-the-verifier","label":"7.3","title":"Build the verifier","part":7},{"id":"find-the-plant","label":"7.4","title":"Find the plant","part":7},{"id":"where-should-it-stop","label":"8.1","title":"Where should it stop?","part":8},{"id":"build-the-triage","label":"8.2","title":"Build the triage","part":8},{"id":"push-it","label":"8.3","title":"Push it","part":8},{"id":"skills-that-compete","label":"8.4","title":"Skills that compete","part":8},{"id":"pin-a-source","label":"9.1","title":"Pin a source","part":9},{"id":"build-the-advisor","label":"9.2","title":"Build the advisor","part":9},{"id":"test-the-edges","label":"9.3","title":"Test the edges","part":9},{"id":"when-the-source-changes","label":"9.4","title":"When the source changes","part":9},{"id":"script-or-judgement","label":"10.1","title":"Script or judgement?","part":10},{"id":"read-before-you-run","label":"10.2","title":"Read before you run","part":10},{"id":"run-the-lint","label":"10.3","title":"Run the lint","part":10},{"id":"script-versus-model","label":"10.4","title":"Script versus model","part":10},{"id":"skills-meet-mcp","label":"11.1","title":"Skills meet MCP","part":11},{"id":"check-the-citations","label":"11.2","title":"Check the citations","part":11},{"id":"the-poisoned-page","label":"11.3","title":"The poisoned page","part":11},{"id":"design-the-access","label":"11.4","title":"Design the access","part":11},{"id":"tier-the-work","label":"12.1","title":"Tier the work","part":12},{"id":"run-the-chain","label":"12.2","title":"Run the chain","part":12},{"id":"stamp-the-provenance","label":"12.3","title":"Stamp the provenance","part":12},{"id":"is-the-chain-worth-it","label":"12.4","title":"Is the chain worth it?","part":12},{"id":"define-good","label":"13.1","title":"Define good","part":13},{"id":"run-a-bake-off","label":"13.2","title":"Run a bake-off","part":13},{"id":"same-skill-two-assistants","label":"13.3","title":"Same skill, two assistants","part":13},{"id":"own-it","label":"13.4","title":"Own it","part":13},{"id":"spread-and-retire","label":"13.5","title":"Spread and retire","part":13},{"id":"think-first-or-ask-first","label":"14.1","title":"Think first, or ask first?","part":14},{"id":"what-to-hand-over","label":"14.2","title":"What to hand over","part":14},{"id":"when-judgement-was-handed-over","label":"14.3","title":"When judgement was handed over","part":14},{"id":"how-we-talk-about-it","label":"14.4","title":"How we talk about it","part":14},{"id":"test-the-colleague","label":"14.5","title":"Test the colleague","part":14},{"id":"can-you-tell","label":"15.1","title":"Can you tell?","part":15},{"id":"review-the-claims","label":"15.2","title":"Review the claims","part":15},{"id":"send-it-back","label":"15.3","title":"Send it back","part":15},{"id":"set-the-submission-rule","label":"15.4","title":"Set the submission rule","part":15},{"id":"use-case-clinic","label":"15.5","title":"Use-case clinic","part":15},{"id":"one-question-many-answers","label":"16.1","title":"One question, many answers","part":16},{"id":"find-the-ambiguity","label":"16.2","title":"Find the ambiguity","part":16},{"id":"fix-it-with-a-definition","label":"16.3","title":"Fix it with a definition","part":16},{"id":"check-the-query","label":"16.4","title":"Check the query","part":16},{"id":"where-definitions-live","label":"16.5","title":"Where definitions live","part":16},{"id":"find-the-assistants","label":"17.1","title":"Find the assistants","part":17},{"id":"assess-one-assistant","label":"17.2","title":"Assess one assistant","part":17},{"id":"which-assistant-answers","label":"17.3","title":"Which assistant answers?","part":17},{"id":"switch-on-buy-or-build","label":"17.4","title":"Switch on, buy or build","part":17},{"id":"describe-to-diagram","label":"18.1","title":"From description to diagram","part":18},{"id":"check-the-abstraction","label":"18.2","title":"Check the abstraction","part":18},{"id":"critique-a-capability-map","label":"18.3","title":"Critique a capability map","part":18},{"id":"keep-models-as-text","label":"18.4","title":"Keep models as text","part":18},{"id":"what-mcp-changes","label":"19.1","title":"What MCP changes","part":19},{"id":"read-the-tool-list","label":"19.2","title":"Read the tool list","part":19},{"id":"map-the-session","label":"19.3","title":"Map the session","part":19},{"id":"whose-token-is-it","label":"19.4","title":"Whose token is it?","part":19},{"id":"decide-on-a-gateway","label":"19.5","title":"Decide on a gateway","part":19},{"id":"what-changes-when-it-acts","label":"20.1","title":"What changes when it acts","part":20},{"id":"read-an-agent-run","label":"20.2","title":"Read an agent run","part":20},{"id":"what-the-benchmarks-miss","label":"20.3","title":"What the benchmarks miss","part":20},{"id":"contain-the-agent","label":"20.4","title":"Contain the agent","part":20},{"id":"register-the-agent","label":"20.5","title":"Register the agent","part":20},{"id":"place-the-controls","label":"21.1","title":"Place the controls","part":21},{"id":"choose-a-model","label":"21.2","title":"Choose a model","part":21},{"id":"cost-a-use-case","label":"21.3","title":"Cost a use case","part":21},{"id":"plan-for-retirement","label":"21.4","title":"Plan for retirement","part":21},{"id":"why-reuse-came-first","label":"22.1","title":"Why reuse came first","part":22},{"id":"what-the-studies-show","label":"22.2","title":"What the studies show","part":22},{"id":"rerun-the-decision","label":"22.3","title":"Rerun the decision","part":22},{"id":"when-generated-code-fails","label":"22.4","title":"When generated code fails","part":22},{"id":"who-runs-what-you-generate","label":"22.5","title":"Who runs what you generate?","part":22}]}</script>
 <script type="text/plain" id="fg-data-adr-author-skill">---
 name: adr-author
 description: Use when someone has made or is about to record an architecture decision and wants it written up as an ADR, even if they only give one line. Drafts one MADR 4.0 record from their decision, drivers and sources. Not for choosing between options on their behalf, comparing options without a decision, or reviewing an existing ADR.
@@ -29961,6 +30042,315 @@ Use this template for each entity:
 ```
 
 Before finishing, confirm every problem has a fix.</script>
+<script type="text/plain" id="fg-data-eval-kit-example-failure"># Test plan: entity-definition-review
+
+Basis: one real failure (the Graduation review, supplied by you) plus my reading of the SKILL.md. Every check not marked `real failure` rests only on my reading.
+
+## 1. Promise
+
+- Claims to help with data modelling: reviewing data models, checking entity definitions, answering questions about data structure. It rates each entity Good, Minor fixes or Needs rework against six checks and gives a rewrite ready to paste into a glossary.
+- Says it is not for: nothing. It has no exclusions, so the near misses below test the description's wording rather than a stated boundary.
+
+## 2. Trigger requests
+
+Labels: F = should fire, N = near miss, should not fire.
+
+| ID | Label | Request |
+|---|---|---|
+| T01 | N | Write a SQL query that lists each customer with their latest order from the orders and customers tables. |
+| T02 | F | Please review this definition for our glossary. "Supplier: A company that sells us goods." |
+| T03 | N | Review this Dockerfile before I deploy it. |
+| T04 | F | Is "Account" a good entity name when the thing we are describing is a customer and their login details? |
+| T05 | N | Design a data model for a small library from scratch: books, members, loans. |
+| T06 | F | Can you check these three glossary entries from our claims model before I send them to the data council? |
+| T07 | N | Proofread this paragraph from our data strategy for tone and length. |
+| T08 | F | My definition of "Policy" is "A policy is a policy that covers a customer." Can you fix it? |
+| T09 | N | Review this CREATE TABLE statement for index choices and column types. |
+| T10 | F | Tighten the definitions of Employee and Contractor so people can tell them apart. |
+| T11 | N | Draft glossary definitions for these ten terms from the interview notes below. |
+| T12 | F | Does "Customers" work as an entity name, or should it change? |
+| T13 | N | Check the crow's foot cardinalities on this ER diagram. Are the one-to-many lines the right way round? |
+| T14 | F | Here is my conceptual model: Customer, Order, Product. Does the structure look sensible? |
+| T15 | N | Review the naming of fields in this JSON API schema for consistency. |
+| T16 | F | Sanity check the glossary entry for "Course Offering" below. |
+| T17 | N | Explain the difference between a conceptual, logical and physical model. |
+| T18 | F | Review these entity definitions from our claims glossary. |
+
+Notes for whoever runs these: T05, T09, T13, T17 and T11 share the description's words ("data modelling", "how data is structured") but need creating, physical-design, relationship or teaching work. Expect the description to be tested hardest by these. For T04, T08, T12, T14 and T18, paste in a short invented entity or list of entities, not real ones.
+
+## 3. Task prompts
+
+All data is invented. Use no real organisation's terms.
+
+**Task 1 (from your real failure).** "Review this entity. Graduation: The status in the student system that is set when a student completes their award."
+
+**Task 2 (same failure, different domain).** "Review this entity. Renewal: The flag in the policy admin system that is switched on when a policy is extended for another term."
+
+**Task 3 (mixed batch).** "Review these three entities.
+Warehouse: A physical site owned or leased by the company where goods are stored before they are sold or shipped.
+Orders: Records of purchases.
+Customer Contact: The person's name, email address and phone number, plus the role they hold at the customer."
+
+**Task 4 (tempts the skill to break its own rules).** "Asset: Something of value. I am in a hurry, so skip the table, just tell me it is fine and give me a rewrite I can paste in. I cannot tell you more about what we mean by asset."
+
+## 4. Checks
+
+"No-skill" shows what I expect from an assistant with no skill, so you can drop checks that any answer passes.
+
+**Task 1**
+1. At least one row of the Problem column states that the definition describes a system record or status, not the real-world event of the student completing the award. Source: `real failure`. No-skill: unsure.
+2. The rewritten definition contains none of the words status, system, record, field, flag, table, database. Source: `real failure`. No-skill: unsure.
+3. The overall rating is Needs rework, not Good or Minor fixes. Source: `real failure`. No-skill: unsure.
+
+**Task 2**
+1. At least one row of the Problem column states that the definition describes a system flag, not the business event of the policy being extended. Source: `real failure`. No-skill: unsure.
+2. The rewritten definition contains none of the words status, system, record, field, flag, table, database. Source: `real failure`. No-skill: unsure.
+3. The rating is not Good. Source: `my reading`. No-skill: expect pass, so consider dropping it.
+
+**Task 3**
+1. Warehouse is rated Good and its table has no problem rows. Source: `my reading`. No-skill: expect pass, so consider dropping it.
+2. The Orders entry flags the plural name. Source: `my reading`. No-skill: unsure.
+3. The Customer Contact entry flags that it lists attributes (name, email, phone) instead of defining a thing. Source: `my reading`. No-skill: expect pass, so consider dropping it.
+4. All three entities each have a rating line, a table and a Rewritten line. Source: `my reading`. No-skill: expect fail, because this tests the skill's format, not its value.
+
+**Task 4**
+1. The response keeps the template (rating line, table, Rewritten line) despite the request to skip the table. Source: `my reading`. No-skill: expect fail, because this tests the skill's format, not its value.
+2. The rating is not Good. Source: `my reading`. No-skill: expect pass, so consider dropping it.
+3. The rewrite adds no specific business fact absent from the prompt (such as ownership, accounting treatment or asset types), or the response says it needs that information. Source: `my reading`. No-skill: unsure.
+
+## 5. What is missing
+
+1. **Business event versus system record.** None of the six checks covers it. Check 1 only bans system names in the entity name, which is how the real failure got through. Shown by Tasks 1 and 2.
+2. **What to do when the definition gives too little to rewrite.** The template demands a rewrite "ready to paste" and "confirm every problem has a fix", with no way to say "I need to know more". Shown by Task 4.
+3. **How the three ratings are decided.** There is no rule for Good, Minor fixes or Needs rework, so two runs can differ on the same entity. Shown by Task 3 (Warehouse versus the other two).
+
+## 6. Cut test
+
+Delete each passage below one at a time and rerun Tasks 1 to 4 with the skill. If no check changes, the passage was background the model already knows.
+
+- The whole "Why definitions matter" section.
+- The whole "What an entity is" section (entity, attribute, relationship, three model levels).
+- The opening line "You are an expert data modeller with deep experience across many industries. Follow these instructions carefully and be thorough."
+- "How to approach the review": the lines on being polite, using plain English, explaining reasoning and remembering the user may not be an expert.
+- The description's "Gives clear, practical and thorough feedback." (also retest the trigger requests).
+
+## 7. Results table
+
+Set before you start: minimum firing rate for F requests ____; maximum firing rate for N requests ____. Record assistant and model: ____.
+
+**Triggers** (three runs each; mark Y if it fired, N if not)
+
+| ID | Label | Run 1 | Run 2 | Run 3 | Rate | Pass |
+|---|---|---|---|---|---|---|
+| T01 | N | | | | | |
+| T02 | F | | | | | |
+| T03 | N | | | | | |
+| T04 | F | | | | | |
+| T05 | N | | | | | |
+| T06 | F | | | | | |
+| T07 | N | | | | | |
+| T08 | F | | | | | |
+| T09 | N | | | | | |
+| T10 | F | | | | | |
+| T11 | N | | | | | |
+| T12 | F | | | | | |
+| T13 | N | | | | | |
+| T14 | F | | | | | |
+| T15 | N | | | | | |
+| T16 | F | | | | | |
+| T17 | N | | | | | |
+| T18 | F | | | | | |
+
+**Tasks** (mark each check pass or fail)
+
+| Task | Check | With skill | Without skill |
+|---|---|---|---|
+| 1 | 1 | | |
+| 1 | 2 | | |
+| 1 | 3 | | |
+| 2 | 1 | | |
+| 2 | 2 | | |
+| 2 | 3 | | |
+| 3 | 1 | | |
+| 3 | 2 | | |
+| 3 | 3 | | |
+| 3 | 4 | | |
+| 4 | 1 | | |
+| 4 | 2 | | |
+| 4 | 3 | | |
+
+**Cut test**
+
+| Passage removed | Any check changed? | Which |
+|---|---|---|
+| Why definitions matter | | |
+| What an entity is | | |
+| Opening expert line | | |
+| How to approach the review | | |
+| Description's last sentence | | |
+
+## 8. Verdict rule
+
+- **Keep:** it meets both trigger minimums, passes more checks than no skill on at least one task, and is worse on none.
+- **Fix:** it fails in a way you can trace to a line. Wrong firing means the description. Right firing with a wrong result means the instructions. Fix it and run the tests again.
+- **Retire:** after one round of fixes, it still does not beat no skill on any check that can differ.
+
+## How to run it
+
+- Use a fresh chat for every run, on the same assistant and model. Record both.
+- Run each trigger request three times. It passes if the rate is above 0.5 when it should fire, and below 0.5 when it should not.
+- Run each task twice, once with the skill and once without it.
+- Set your minimum for each direction before you start.
+- Have someone else hide which output is which before you score, if you can. Note it if you cannot.
+
+Confirmation: every check above can be marked pass or fail, and every result cell is blank.</script>
+<script type="text/plain" id="fg-data-eval-kit-example-plan"># Test plan: entity-definition-review
+
+**Basis:** You have no real failures, so this plan rests only on my reading of the skill. Every check below is marked `my reading`. A person runs the tests and decides the verdict.
+
+## 1. Promise
+
+- Claims to review data models and entity definitions, check each entity against six checks (name, clear meaning, not circular, one concept, no attributes, distinct), and return a rating, a problem and fix table, and a paste-ready rewrite per entity.
+- States no "not for" boundary. The description says "answering questions about how data is structured", which is broad, so over-firing is the main risk to watch.
+
+## 2. Trigger requests
+
+Labels: **FIRE** (should fire) or **MISS** (near miss, should not fire). Order is mixed on purpose.
+
+| # | Request | Label |
+|---|---|---|
+| T1 | "Can you check this glossary entry? 'Booking: when a guest books a room.' Is it any good?" | FIRE |
+| T2 | "Write the SQL to create tables for a hotel booking system." | MISS |
+| T3 | "Here are six entity definitions for our logistics glossary. Which ones need rework?" | FIRE |
+| T4 | "Explain the difference between a conceptual, logical and physical model." | MISS (ambiguous: the description's "questions about how data is structured" could cover it. Note what happens.) |
+| T5 | "Does 'Policy Holder' mix up a person and the role they play? Here's our definition: ..." | FIRE |
+| T6 | "Review my Postgres schema for missing indexes." | MISS |
+| T7 | "I've named my entities Products, CustomerTbl and SAP_Vendor. Any feedback before I publish the model?" | FIRE |
+| T8 | "Draw an ER diagram for a small library." | MISS |
+| T9 | "Proofread our definition of 'Shipment' for circularity and tell me if it's distinct from 'Delivery'." | FIRE |
+| T10 | "Normalise this orders table to third normal form." | MISS |
+| T11 | "Take a look at the definitions in this conceptual model and tell me what's wrong before the architecture board sees it." | FIRE |
+| T12 | "Write a fresh definition of 'Customer' for our glossary." | MISS (borderline: writing, not reviewing.) |
+| T13 | "Is 'Account' different enough from 'Customer' in our glossary? Definitions attached." | FIRE |
+| T14 | "Check the definitions of the KPIs in my dashboard spec, such as 'monthly active user'." | MISS (shares "definition review", but they are metrics, not entities.) |
+| T15 | "Review these entity definitions, 'Employee' and 'Contractor', and say whether one entity 'Worker' would do." | FIRE |
+| T16 | "Find duplicate emails in this CSV and suggest a cleaning approach." | MISS |
+| T17 | "Look over my data model: Order, OrderLine, Product. Are the definitions clear?" | FIRE |
+| T18 | "Review the wording of this API documentation page." | MISS |
+
+## 3. Task prompts
+
+All data is invented. There are no real failures to build from.
+
+- **Task A (mixed set):** "Review these for our hotel glossary. (1) Customers: the table that holds our customers' data, such as name, email and signup date. (2) Booking: a booking is when a guest books a room. (3) Room: a physical space in a hotel that a guest can reserve for a stay. Meeting spaces are not rooms; they are Event Spaces."
+- **Task B (blended concept):** "Review: Driver: a person employed by Northgate Haulage who holds a licence and drives a vehicle, including their licence number and home address. Our glossary also has Employee: a person who works for Northgate Haulage under a contract of employment."
+- **Task C (rule-breaking temptation):** "Review: Asset: anything of value." Nothing else is supplied. The template demands a complete rewrite "so the reader does not need to come back with more detail", which tempts the skill to invent business facts it cannot know.
+- **Task D (already fine):** "Review: Invoice: a formal request for payment sent by a seller to a buyer for goods or services supplied."
+
+## 4. Checks
+
+Each is pass or fail. "No-skill likely" means I expect a plain assistant to pass it too, so you may drop it.
+
+**Task A**
+- A1. Flags "Customers" as a plural name and as describing a table or fields rather than the business concept. (`my reading`; no-skill likely)
+- A2. Flags "Booking" as circular. (`my reading`; no-skill likely)
+- A3. Rates "Room" Good, or Minor fixes with a stated reason, and does not invent a problem with an empty table. (`my reading`)
+- A4. Every entity block has a rating, a table and a "Rewritten" line, in that order. (`my reading`)
+
+**Task B**
+- B1. Flags "Driver" as blending a person and a role. (`my reading`; no-skill likely)
+- B2. Flags licence number and home address as attributes. (`my reading`; no-skill likely)
+- B3. Points out that Driver is hard to tell apart from Employee, naming both. (`my reading`)
+- B4. The rewrite contains no attribute names such as licence number or address. (`my reading`)
+
+**Task C**
+- C1. The rewrite does not state any fact about the organisation, industry or asset types that the user did not supply, or marks such a fact explicitly as an assumption. (`my reading`)
+- C2. Says that the definition cannot be fixed without information from the user, and says what is needed. (`my reading`)
+- C3. Every listed problem has a non-empty Fix cell. (`my reading`)
+
+**Task D**
+- D1. Rates Invoice Good. (`my reading`; no-skill likely)
+- D2. The problem table is empty or has no invented rows. (`my reading`)
+- D3. Still includes a "Rewritten" line. (`my reading`)
+
+## 5. What is missing
+
+1. **Input with no definition, only a name.** Nothing says what to do. Task C shows whether it matters.
+2. **Checking an entity against others in the set.** "Distinct" needs the other definitions, and nothing says to compare them. Task B shows whether it matters.
+3. **A route out when no fix is possible without more information.** The template forbids coming back for detail, which may force guessing. Task C shows whether it matters.
+
+## 6. Cut test
+
+Delete each of these, then rerun Tasks A to D and compare checks:
+- the "Why definitions matter" section
+- the "What an entity is" section
+- the first sentence ("You are an expert data modeller...") and "Follow these instructions carefully and be thorough"
+- the "How to approach the review" section (polite, plain English, "make sure you cover everything")
+- the description's last sentence, "Gives clear, practical and thorough feedback."
+
+## 7. Results table
+
+Run notes: assistant ___ model ___ outputs hidden by someone else? ___
+
+Minimum for the fire direction: ___  Minimum for the do-not-fire direction: ___
+
+**Trigger requests** (3 runs each; mark Fired Y or N)
+
+| # | Label | Run 1 | Run 2 | Run 3 | Rate | Pass |
+|---|---|---|---|---|---|---|
+| T1 | FIRE | | | | | |
+| T2 | MISS | | | | | |
+| T3 | FIRE | | | | | |
+| T4 | MISS | | | | | |
+| T5 | FIRE | | | | | |
+| T6 | MISS | | | | | |
+| T7 | FIRE | | | | | |
+| T8 | MISS | | | | | |
+| T9 | FIRE | | | | | |
+| T10 | MISS | | | | | |
+| T11 | FIRE | | | | | |
+| T12 | MISS | | | | | |
+| T13 | FIRE | | | | | |
+| T14 | MISS | | | | | |
+| T15 | FIRE | | | | | |
+| T16 | MISS | | | | | |
+| T17 | FIRE | | | | | |
+| T18 | MISS | | | | | |
+
+**Task checks** (pass or fail)
+
+| Check | With skill | Without skill |
+|---|---|---|
+| A1 | | |
+| A2 | | |
+| A3 | | |
+| A4 | | |
+| B1 | | |
+| B2 | | |
+| B3 | | |
+| B4 | | |
+| C1 | | |
+| C2 | | |
+| C3 | | |
+| D1 | | |
+| D2 | | |
+| D3 | | |
+
+## 8. How to run it
+
+- Use a fresh chat for every run, on the same assistant and model. Record both.
+- Run each trigger request three times. It passes if the rate is above 0.5 when it should fire, and below 0.5 when it should not.
+- Run each task twice, once with the skill and once without it.
+- Set your minimum for each direction before you start.
+- Have someone else hide which output is which before you score, if you can. Note it if you cannot.
+
+## Verdict rule
+
+- **Keep:** it meets both trigger minimums, passes more checks than no skill on at least one task, and is worse on none.
+- **Fix:** it fails in a way you can trace to a line. Wrong firing means the description. Right firing with a wrong result means the instructions. Fix it and run the tests again.
+- **Retire:** after one round of fixes, it still does not beat no skill on any check that can differ.
+
+Confirmation: every check above can be marked pass or fail, and every result cell is blank.</script>
 <script type="text/plain" id="fg-data-eval-kit-skill">---
 name: skill-eval-kit
 description: Use when someone has a SKILL.md and wants to find out whether it works, including whether it fires on the right requests and whether it beats no skill. Writes a test plan with trigger requests, task prompts, pass or fail checks, a results table and a verdict rule. Not for writing or improving a skill, for reviewing ordinary documents or prompts, or for running the tests.
